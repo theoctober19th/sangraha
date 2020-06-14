@@ -25,7 +25,10 @@ SECRET_KEY = 'ise6)=af%40i5*()$t!w39)z=5s8*asi#$7_z8*&6327#_^fo@'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['local.host', 'localhost', '127.0.0.1', 'localhost.com']
+if DEBUG:
+    ALLOWED_HOSTS = ['local.host', 'localhost', '127.0.0.1', 'localhost.com']
+else:
+    ALLOWED_HOSTS = ['bikalpacodes.com']
 
 
 # Application definition
@@ -142,6 +145,7 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
+    'social_core.backends.google.GoogleOAuth2',
 ]
 
 # SOCIAL AUTH CRDENTIALS
@@ -151,3 +155,5 @@ if DEBUG:
     SOCIAL_AUTH_FACEBOOK_SECRET = keys.FACEBOOK_AUTH_SECRET
     SOCIAL_AUTH_TWITTER_KEY = keys.TWITTER_AUTH_KEY
     SOCIAL_AUTH_TWITTER_SECRET = keys.TWITTER_AUTH_SECRET
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = keys.GOOGLE_AUTH_KEY
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = keys.GOOGLE_AUTH_SECRET
