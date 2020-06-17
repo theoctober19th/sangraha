@@ -26,7 +26,8 @@ SECRET_KEY = 'ise6)=af%40i5*()$t!w39)z=5s8*asi#$7_z8*&6327#_^fo@'
 DEBUG = True
 
 if DEBUG:
-    ALLOWED_HOSTS = ['local.host', 'localhost', '127.0.0.1', 'localhost.com']
+    ALLOWED_HOSTS = ['local.host', 'localhost', '127.0.0.1',
+                     'localhost.com', 'cf57332129fb.ngrok.io']
 else:
     ALLOWED_HOSTS = ['bikalpacodes.com']
 
@@ -35,6 +36,7 @@ else:
 
 INSTALLED_APPS = [
     'account.apps.AccountConfig',
+    'images.apps.ImagesConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,7 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'social_django',
     'django_extensions',
-    "sslserver"
+    "sslserver",
 ]
 
 MIDDLEWARE = [
@@ -146,6 +148,10 @@ AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookOAuth2',
     'social_core.backends.twitter.TwitterOAuth',
     'social_core.backends.google.GoogleOAuth2',
+]
+
+VALID_IMAGE_EXTENSIONS = [
+    'jpg', 'jpeg', 'png'
 ]
 
 # SOCIAL AUTH CRDENTIALS
