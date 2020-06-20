@@ -27,7 +27,9 @@ DEBUG = True
 
 if DEBUG:
     ALLOWED_HOSTS = ['local.host', 'localhost', '127.0.0.1',
-                     'localhost.com', 'cf57332129fb.ngrok.io']
+                     'localhost.com', 'cf57332129fb.ngrok.io',
+                     '9b99c9156ba4.ngrok.io',
+                     ]
 else:
     ALLOWED_HOSTS = ['bikalpacodes.com']
 
