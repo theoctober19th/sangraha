@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'social_django',
     'django_extensions',
     "sslserver",
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [
@@ -165,3 +166,4 @@ if DEBUG:
     SOCIAL_AUTH_TWITTER_SECRET = keys.TWITTER_AUTH_SECRET
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = keys.GOOGLE_AUTH_KEY
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = keys.GOOGLE_AUTH_SECRET
+    THUMBNAIL_DEBUG = True
