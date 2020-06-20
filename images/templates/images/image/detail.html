@@ -10,17 +10,21 @@
     {% thumbnail image.image '300' as im %}
         <a href="{{ image.image.url }}"><img src="{{ im.url }}" class = "image-detail"></a>
     {% endthumbnail %}
-    {% with image.users_who_liked.count as like_count %}
+    {% with like_count=image.users_who_liked.count users_who_liked=image.users_who_liked.all%}
         <div class="image-info">
             <div>
                 <span class="count">
-                    {{like_count}} Like{{like_count|pluralize}}
+                    <span class="total">{{like_count}} </span>
+                    Like{{like_count|pluralize}}
                 </span>
+                <a href="#" data-id="{{image.id}}" data-action="{% if request.user in users_who_liked %}un{% endif %}like" class="like button">
+                    {% if request.user in users_who_liked %}Unlike{% else %}Like{% endif %}
+                </a>
             </div>
             {{image.description|linebreaks}}
         </div>
         <div class="image-likes">
-            {% for user in image.users_who_liked.all %}
+            {% for user in users_who_liked %}
                 <div>
                     <img src="{{user.profile.photo.url}}" alt="">
                     <p>{{user.first_name}}</p>
@@ -31,3 +35,35 @@
         </div>
     {% endwith %}
 {% endblock content %}
+
+{% block domready %}
+    
+{% endblock domready %}
+
+{% block scriptblock %}
+<script>
+$(document).ready(function(){
+    $('a.like').click(function(e){
+        console.log($(this).data('id'))
+        console.log($(this).data('action'))
+        e.preventDefault();
+        $.post('{% url 'images:like' %}', {
+            id: $(this).data('id'),
+            action: $(this).data('action')
+        }, function(data){
+            console.log(data['status'])
+            if(data['status'] == 'ok'){
+                var previous_action = $('a.like').data('action');
+                $('a.like').data('action', previous_action == 'like' ? 'unlike': 'like');
+                $('a.like').text(previous_action == 'like' ? 'Unlike' : 'Like');
+
+                var previous_likes = $('span.count .total').text();
+                console.log(previous_likes);
+                previous_likes = parseInt(previous_likes);
+                $('span.count .total').text(previous_action == 'like' ? previous_likes + 1 : previous_likes - 1);
+            }
+        })
+    });
+})
+</script>
+{% endblock scriptblock %}
