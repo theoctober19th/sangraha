@@ -1,5 +1,5 @@
 (function () {
-  let site_url = "https://9b99c9156ba4.ngrok.io/";
+  let site_url = "https://b8258d8903aa.ngrok.io/";
   if (window.bookmarklet !== undefined) {
     bookmarklet.bookmarklet();
   } else {

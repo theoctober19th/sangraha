@@ -2,8 +2,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,django,macos
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,django,macos
 
+#environment file
+env
+
 # Keys file
-chautari/keys.py
+sangraha/keys.py
 
 ### Django ###
 *.log

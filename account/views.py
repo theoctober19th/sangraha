@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import LoginForm, UserEditForm, ProfileEditForm, UserRegisterForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from .models import Profile
+from django.contrib.auth.models import User
 from django.contrib import messages
 
 # no need to write this view, automatically handled by django.contrib.auth
@@ -53,8 +54,13 @@ def user_register(request):
 def edit(request):
     if request.method == 'POST':
         user_form = UserEditForm(instance=request.user, data=request.POST)
-        profile_form = ProfileEditForm(
-            instance=request.user.profile, data=request.POST, files=request.FILES)
+        try:
+            profile_form = ProfileEditForm(
+                instance=request.user.profile, data=request.POST, files=request.FILES)
+        except:
+            Profile.objects.create(user=request.user)
+            profile_form = ProfileEditForm(
+                instance=request.user.profile, data=request.POST, files=request.FILES)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
@@ -63,8 +69,24 @@ def edit(request):
             messages.error(request, "Cannot edit profile at the moment.")
     else:
         user_form = UserEditForm(instance=request.user)
-        profile_form = ProfileEditForm(instance=request.user.profile)
+        try:
+            profile_form = ProfileEditForm(instance=request.user.profile)
+        except:
+            Profile.objects.create(user=request.user)
+            profile_form = ProfileEditForm(instance=request.user.profile)
     return render(request, 'account/edit.html', {
         'user_form': user_form,
         'profile_form': profile_form
     })
+
+
+@login_required
+def user_list(request):
+    users = User.objects.filter(is_active=True)
+    return render(request, 'account/user/list.html', {'users': users, 'section': 'people'})
+
+
+@login_required
+def user_detail(request, username):
+    user = get_object_or_404(User, username=username, is_active=True)
+    return render(request, 'account/user/detail.html', {'user': user, 'section': 'people'})
